@@ -1,0 +1,3 @@
+[submodule "runtime/ZalithLauncher2"]
+	path = runtime/ZalithLauncher2
+	url = https://github.com/ZalithLauncher/ZalithLauncher2.git
