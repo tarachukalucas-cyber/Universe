@@ -25,13 +25,12 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android NDK
+      - name: Install Android SDK platform and NDK
         run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platforms;android-37-ext2" "build-tools;37.0.0" "ndk;25.2.9519653"
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n 1)"
+          test -x "$SDKMANAGER"
+          yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses
+          "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --install "platforms;android-37-ext2" "build-tools;37.0.0" "ndk;25.2.9519653"
 
       - name: Set up Rust for native runtime components
         uses: dtolnay/rust-toolchain@stable
