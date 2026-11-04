@@ -8,6 +8,14 @@ props = root / "ZalithLauncher" / "gradle.properties"
 screen = root / "ZalithLauncher" / "src/main/java/com/movtery/zalithlauncher/ui/screens/content/LauncherScreen.kt"
 
 g = gradle.read_text()
+upstream_sdk = """compileSdk {
+        version = release(37) {
+            minorApiLevel = 2
+        }
+    }"""
+if upstream_sdk not in g:
+    raise SystemExit("Could not locate upstream compile SDK block; stop instead of patching an unknown build.")
+g = g.replace(upstream_sdk, "compileSdk = 36", 1)
 old = 'applicationId = zalithPackageName'
 new = 'applicationId = "com.universe.launcher"'
 if old not in g:
