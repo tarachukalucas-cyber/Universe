@@ -31,6 +31,7 @@ jobs:
           test -x "$SDKMANAGER"
           yes | "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --licenses
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --install "platforms;android-37-ext2" "build-tools;37.0.0" "ndk;25.2.9519653"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> "$GITHUB_ENV"
 
       - name: Set up Rust for native runtime components
         uses: dtolnay/rust-toolchain@stable
@@ -46,8 +47,6 @@ jobs:
 
       - name: Build the ARM64 debug APK
         working-directory: runtime/ZalithLauncher2
-        env:
-          ANDROID_NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/25.2.9519653
         run: |
           chmod +x gradlew
           ./gradlew --no-daemon --stacktrace :ZalithLauncher:assembleDebug -Darch=arm64
